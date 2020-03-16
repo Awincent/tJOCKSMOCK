@@ -20,17 +20,33 @@ public class RandomBuilding_mk1 : MonoBehaviour
     public List<GameObject> buildings;
     public GameObject[] buildingsInScene;
 
-
-
+    public bool buildable = true;
     private bool paused;
     private Vector3 temp = new Vector3(0, 0, 0);//targetBuilding.transform.position;
+
+    [Range(0, 10)]
+    public float randomHeight; 
+
+    GameObject[] placedParts;
 
 
     // Start is called before the first frame update
     void Start()
     {
 
-        buildingsInScene = GameObject.FindGameObjectsWithTag("Building");
+    }
+
+    
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (Input.GetKey(KeyCode.R) && buildable == true)
+        {
+            buildable = false;
+
+            buildingsInScene = GameObject.FindGameObjectsWithTag("Building");
 
         for (int i = 0; i < buildingsInScene.Length; i++)
         {
@@ -39,14 +55,21 @@ public class RandomBuilding_mk1 : MonoBehaviour
 
         middleAmount = buildingHeight - 2;
 
-        BuildBuilding();
+            BuildBuilding();
+        }
 
+        if (Input.GetKey(KeyCode.F))
+        {
 
-    }
+            placedParts = GameObject.FindGameObjectsWithTag("Part");
 
-    // Update is called once per frame
-    void Update()
-    {
+            foreach (var gameObject in placedParts)
+            {
+
+                Rigidbody tempRb = gameObject.GetComponent<Rigidbody>();
+                Destroy(tempRb);
+            }
+        }
 
     }
 
@@ -65,7 +88,9 @@ public class RandomBuilding_mk1 : MonoBehaviour
 
     public void AddMiddles()
     {
-        for (int i = 0; i < middleAmount; i++)
+        int tempHeight = Random.Range(middleAmount - (int)randomHeight , middleAmount + (int)randomHeight);
+        
+        for (int i = 0; i < tempHeight; i++)
         {
             buildingParts.Add(middles[Random.Range(0,middles.Length)]);
         }
@@ -83,7 +108,7 @@ public class RandomBuilding_mk1 : MonoBehaviour
             for (int i = 0; i < finishedBuilding.Length; i++)
             {               
                 //temp = finishedBuilding[i].gameObject.transform.position;
-                Instantiate(finishedBuilding[i], temp + new Vector3(0, i + 1, 0), Quaternion.identity, transform.parent);
+                Instantiate(finishedBuilding[i], temp + new Vector3(0, i + 3, 0), Quaternion.identity, transform.parent);
             }
 
             //buildings.RemoveAt(0);
