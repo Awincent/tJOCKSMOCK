@@ -16,7 +16,6 @@ public class TileGenerator : MonoBehaviour
     [SerializeField]
     protected int height = 5;
  
-    // Start is called before the first frame update
     void Start()
     {
         /*float offsetX = width / 2f - 0.5f;
